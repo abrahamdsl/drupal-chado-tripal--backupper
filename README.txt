@@ -4,17 +4,17 @@ So I have made the scripts to automate making of backups of Drupal+Chado+Tripal,
 ( and in essence GBrowse and JBrowse contents when using GMOD in the Cloud AMI ).
 
 RUNNING INSTRUCTIONS
-
-	Just run like any other shell scripts. However, you might need to edit some variables. This is
-	mostly true for those that deal with databases.
+        Just run like any other shell scripts. However, you might need to edit some variables. This is
+        mostly true for those that deal with databases.
 
 BACKUP FILES NAMING CONVENTIONS
-	<sequential number><underscore><string describing this backup><underscore>{ 'db--{drupal|chado}.sql' | 'var-www.tar.gz' }
+	<sequential number><underscore><string describing this backup><underscore>{ 'db--{drupal|chado}.sql' | 'var-www.tar.gz' | 'changelog.txt' }
 
 Example:
 	000_fresh-from-maintenance-or-reformat_var-www.tar.gz
 	000_fresh-from-maintenance-or-reformat_db--drupal.sql
 	000_fresh-from-maintenance-or-reformat_db--chado.sql
+	000_fresh-from-maintenance-or-reformat_changelog.txt
 
 DESCRIPTION OF FILES
 
@@ -67,11 +67,28 @@ RETURN VALUES
 
 
 FURTHER WORK
+	(RESOLVED 15JUL2013-1457) Delete all contents of /var/www first
+
+	(RESOLVED 18JUL2013-1453) Remove database `chado` from being backed up - not our business.
+
+	(RESOLVED 18JUL2013-1453) Add '--host' parameter on backup_database.sh
+
+	(RESOLVED 26JUL2013-1022) Remove database `chado` from being restored - not our business.
+
+	In backing up /var/www, check/separate symbolic links (don't dereference) and make functionality that will restore such.	
+
+	Compress by default SQL dump file into tar.gz : add a parameter to enable opt-out
+
+	Search folder "src__CURRENT" by default when looking for potential files.
+
 	Aside from checking existence of files needed, check too if target directory/ies are writable.
 
 	How can we just have one file where settings are there (i.e. DB passwords), and
 	then, the scripts will look at first for it and use settings specified there. If not,
 	there will be defaults. Just like what "setup.ini" in most Microsoft softwares is for.
+
+	In connection with the previous paragraph, create mechanism on excepting what to delete,
+	any hard or soft or symbolic links to re-create after.
 
 	Research on how to apply the likes of C's library function to bash - that is, how to share commonly
 	used functions - i.e. checking if root, random.

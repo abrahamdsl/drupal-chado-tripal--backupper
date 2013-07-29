@@ -17,10 +17,9 @@ fi
 DESIRED_USER=root;
 CURRENT_USER=`whoami`;
 PGUSER=your_postgresql_useraccount_name
-PGPASSWORD=your_postgresql_useraccount_password
+export PGPASSWORD=your_postgresql_useraccount_password
 NUM=$1
 DRUPAL_DUMP_FILE="$1_db--drupal.sql";
-CHADO_DUMP_FILE="$1_db--chado.sql";
 THIS_SCRIPT_DIR=${0%/*}/;
 
 # statement start! 
@@ -36,16 +35,11 @@ echo "[info] `date` : This script's directory is at : $THIS_SCRIPT_DIR";
 
 #check for the dump's existence first
 if [ ! -e $DRUPAL_DUMP_FILE ]; then
-	echo "[error] `date`: Cannot find file : $DRUPAL_DUMP_FILE"";
+	echo "[error] `date`: Cannot find file : $DRUPAL_DUMP_FILE";
         exit 3;
-fi
-if [ ! -e $CHADO_DUMP_FILE ]; then
-	echo "[error] `date`: Cannot find file : $CHADO_DUMP_FILE"";
-	exit 3;
 fi
 echo "[info] `date` : Will be restoring :";
 echo "			(1) $DRUPAL_DUMP_FILE ";
-echo "			(2) $CHADO_DUMP_FILE";
 echo "";
 echo "";
 
@@ -60,18 +54,12 @@ fi
 echo "[info] `date` : Restoring database 'drupal' from $DRUPAL_DUMP_FILE ...";
 #echo "Oops, just testing. exiting.";
 #exit 0;
-psql drupal --username=$PGUSER --no-password < $DRUPAL_DUMP_FILE
+psql drupal --host=localhost --username=$PGUSER --no-password < $DRUPAL_DUMP_FILE
 if [ "$?" != "0" ]; then
 	echo "[error] `date` : Error restoring from dump. Please check appropriate files and settings.";
 	exit 1;
 fi
 
-echo "[info] `date` : Restoring database 'chado' from $CHADO_DUMP_FILE ...";
-psql chado --username=$PGUSER --no-password < $CHADO_DUMP_FILE 
-if [ "$?" != "0" ]; then
-        echo "[error] `date` : Error restoring from dump. Please check appropriate files and settings.";
-        exit 1;
-fi
 
 echo "[info] `date` : Database dump restoration script finished.";
 exit 0;
