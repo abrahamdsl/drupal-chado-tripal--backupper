@@ -25,21 +25,21 @@ fi
 
 # Variable declarations
 PGUSER=your_postgresql_useraccount_name
-PGPASSWORD=your_postgresql_useraccount_password
+export PGPASSWORD=your_postgresql_useraccount_password
 NUM=$1
 DRUPAL_DUMP_FILE="$1_$2_db--drupal.sql";
-CHADO_DUMP_FILE="$1_$2_db--chado.sql";
+#CHADO_DUMP_FILE="$1_$2_db--chado.sql";
 
 
 
 echo "[info] `date` : Database dumping script called.";
 echo "[info] `date` : Dumping database 'drupal' to $DRUPAL_DUMP_FILE ...";
 
-pg_dump drupal --username=$PGUSER --no-password > $DRUPAL_DUMP_FILE
+pg_dump drupal --host=localhost --username=$PGUSER --no-password > $DRUPAL_DUMP_FILE
 
-echo "[info] `date` : Dumping database 'chado' to $CHADO_DUMP_FILE ...";
+#echo "[info] `date` : Dumping database 'chado' to $CHADO_DUMP_FILE ...";
 
-pg_dump chado --username=$PGUSER --no-password > $CHADO_DUMP_FILE 
+#pg_dump chado --username=$PGUSER --no-password > $CHADO_DUMP_FILE 
 
 echo "[info] `date` : Database dumping script finished.";
 

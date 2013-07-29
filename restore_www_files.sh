@@ -37,13 +37,16 @@ if [ "$DESIRED_USER" != "$CURRENT_USER" ]; then
         sleep 15;
 fi
 
-echo "[info] `date` : Checks passed. Extracting ...";
-
 if [ ! -e $1 ]; then
 	echo "[error] `date` : File $1 not found.";
 	exit 3;
 fi
 
+echo "[info] `date` : Checks passed. Deleting files ...";
+rm -r /var/www/*.*
+rm -r /var/www/*
+
+echo "[info] `date` : Extracting ...";
 tar --same-owner --directory=/var/www -xzpvf $1
 if [ "$?" != "0" ]; then
 	"[warning] `date` : Extraction did not return zero - something might have gone wrong. Please check.";
