@@ -24,8 +24,8 @@ if [ "$2" == "" ]; then
 fi
 
 # Variable declarations
-PGUSER=your_postgresql_useraccount_name
-export PGPASSWORD=your_postgresql_useraccount_password
+PGUSER=<your pguser here>
+export PGPASSWORD=<your pgpassword here>
 NUM=$1
 DRUPAL_DUMP_FILE="$1_$2_db--drupal.sql";
 #CHADO_DUMP_FILE="$1_$2_db--chado.sql";
